@@ -43,11 +43,15 @@
       "enabled": false
     },
     {
-      "description": "Talos — skip x.y.0 releases",
+      "description": "Skip X.Y.0 releases",
       "matchDatasources": [
-        "github-tags"
+        "github-tags",
+        "helm"
       ],
       "matchDepNames": [
+        "cert-manager",
+        "cilium",
+        "longhorn",
         "siderolabs/talos"
       ],
       "allowedVersions": "!/^v?\\d+\\.\\d+\\.0$/"

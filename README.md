@@ -22,13 +22,10 @@
     <img src="https://img.shields.io/github/forks/hcloud-k8s/terraform-hcloud-kubernetes" alt="forks" />
   </a>
   <a href="https://search.opentofu.org/module/hcloud-k8s/kubernetes/hcloud">
-    <img src="https://img.shields.io/badge/OpenTofu-Hcloud--K8s-blue?logo=opentofu" alt="OpenTofu Module" />
+    <img src="https://img.shields.io/badge/OpenTofu-Hcloud--K8s-FFDA18?logo=opentofu" alt="OpenTofu Module" />
   </a>
   <a href="https://registry.terraform.io/modules/hcloud-k8s/kubernetes/hcloud">
     <img src="https://img.shields.io/terraform/module/dt/hcloud-k8s/kubernetes/hcloud?logo=terraform&label=Terraform" alt="Terraform Registry downloads" />
-  </a>
-  <a href="https://github.com/hcloud-k8s/terraform-hcloud-kubernetes/search?l=hcl">
-    <img src="https://img.shields.io/github/languages/top/hcloud-k8s/terraform-hcloud-kubernetes?logo=hashicorp&label=HCL" alt="HCL top language" />
   </a>
   <a href="https://github.com/hcloud-k8s/terraform-hcloud-kubernetes/issues/">
     <img src="https://img.shields.io/github/issues/hcloud-k8s/terraform-hcloud-kubernetes?logo=github" alt="open issues" />
@@ -72,14 +69,14 @@ This project is committed to production-grade configuration and lifecycle manage
 
 Provision a highly available and secure Kubernetes cluster on Hetzner Cloud, defined by these key features:
 
-* **Immutable Infrastructure:** Utilizes Talos Linux to provide a fully declarative, completely immutable Kubernetes cluster.
-* **Architecture Flexibility:** Supports deployment on both **AMD64** and **ARM64** instances with automated image synchronization.
-* **Maximized Uptime:** Delivers high availability across all control plane and worker components for consistent, reliable performance.
-* **Elastic Scaling:** Supports automatic scaling of both **nodes** and **pods** to effortlessly accommodate dynamic workloads.
-* **Quick Start Addons:** Optional, pre-integrated Ingress Controller and Cert Manager simplifies the rapid deployment of applications.
-* **Dual-Stack Networking:** Load Balancers offer native support for both **IPv4** and **IPv6** for modern, efficient traffic management.
-* **Isolated Network Fabric:** Ensures all internal cluster traffic is confined to an isolated, private Hetzner Cloud Network.
-* **Comprehensive Security:** Enforces a security-first design with perimeter firewalls and encryption applied to data both in transit and at rest.
+* **Immutable Infrastructure:** Uses Talos Linux to deliver a fully declarative, immutable Kubernetes cluster.
+* **Multi-Architecture:** Supports deployment on both **AMD64** and **ARM64** instances, with automated image builds.
+* **High Availability:** Provides high availability across control plane and worker components for reliable operation.
+* **Autoscaling:** Supports automatic scaling of both **Nodes** and **Pods** to seamlessly handle dynamic workloads.
+* **Quick Start:** Optional **Gateway API**, **Cert Manager**, and **Longhorn** integrations for faster app deployment.
+* **Dual-Stack:** Load balancers provide native **IPv4** and **IPv6** connectivity with **PROXY Protocol** support.
+* **Isolated Network:** Keeps all internal cluster traffic confined to an isolated, private Hetzner Cloud Network.
+* **Security:** Security-first architecture with perimeter firewalls and encryption for data in transit and at rest.
 
 <!-- Components -->
 ### 📦 Components
@@ -155,7 +152,7 @@ Talos Linux is a secure, minimal, and immutable OS for Kubernetes, removing SSH 
 
 - [terraform](https://developer.hashicorp.com/terraform/install) or [tofu](https://opentofu.org/docs/intro/install/) to deploy the Cluster
 - [packer](https://developer.hashicorp.com/packer/install) to upload Talos Images
-- [jq](https://jqlang.org/download/) for internal API Communication
+- [curl](https://curl.se) and [jq](https://jqlang.org/download/) for API Communication
 - [talosctl](https://www.talos.dev/latest/talos-guides/install/talosctl) to control the Talos Cluster
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to control Kubernetes (optional)
 
@@ -1188,7 +1185,9 @@ kubectl get pods  # This will trigger OIDC authentication
 
 <!-- Lifecycle -->
 ## ♻️ Lifecycle
-Any minor or major upgrades to Talos and Kubernetes will result in a major version change of this module. Please be aware that downgrades are typically neither supported nor tested.
+All [component](#-components) versions are managed by this module and validated for compatibility with the supported Kubernetes version.
+
+Any minor or major upgrade to **Talos** or **Kubernetes** results in a major version change for this module. Downgrades are generally neither supported nor tested.
 
 > [!IMPORTANT]
 > Before upgrading to the next major version of this module, ensure you are on the latest release of the current major version. Do not skip any major release upgrades.
@@ -1198,7 +1197,8 @@ The table below lists the minimum required versions of each component to support
 
 | Hcloud K8s | Kubernetes | Hcloud CCM | Hcloud CSI | Longhorn | Cilium | Ingress NGINX | Cert Manager |
 | :--------: | :--------: | :--------: | :--------: | :------: | :----: | :-----------: | :----------: |
-|  **(5)**   |    1.34    |    1.27    |    2.18    |    ?     | (1.19) |     4.14      |     1.19     |
+|  **(6)**   |    1.35    |    1.30    |    2.19    |   1.11   |   ?    |       -       |     1.19     |
+|  **(5)**   |    1.34    |    1.27    |    2.18    |   1.11   |  1.19  |     4.14      |     1.19     |
 |  **(4)**   |    1.33    |    1.26    |    2.14    |  1.8.2   |  1.18  |     4.13      |     1.18     |
 <!--
 |   **3**    |    1.33    |    1.26    |    2.14    |   1.8.2  |  1.18  |     4.13      |     1.18     |
@@ -1214,8 +1214,8 @@ In this module, upgrades are conducted with care. You will consistently receive 
 
 <!--
 - Talos/K8s: https://github.com/siderolabs/talos/blob/release-1.6/pkg/machinery/constants/constants.go
-- HCCM: https://github.com/hetznercloud/hcloud-cloud-controller-manager/blob/becfd60814cd868ca972492298f17b8e7e11c8ed/docs/reference/version-policy.md
-- HCSI: https://github.com/hetznercloud/csi-driver/blob/main/docs/kubernetes/README.md#versioning-policy
+- HCCM: https://github.com/hetznercloud/hcloud-cloud-controller-manager/blob/main/docs/reference/version-policy.md
+- HCSI: https://github.com/hetznercloud/csi-driver/blob/main/docs/kubernetes/versioning-policy.md
 - Longhorn: https://longhorn.io/docs/1.10.0/best-practices/#kubernetes-version
 - Cilium: https://github.com/cilium/cilium/blob/v1.15/Documentation/network/kubernetes/requirements.rst#kubernetes-version
 - Ingress Nginx: https://github.com/kubernetes/ingress-nginx?tab=readme-ov-file#supported-versions-table 
@@ -1257,7 +1257,12 @@ If you'd like to support this project, please consider leaving a ⭐ on GitHub!<
 > If you don’t have a Hetzner account yet, you can use this [Hetzner Cloud Referral Link](https://hetzner.cloud/?ref=GMylKeDmqtsD) to claim a €20 credit and support this project at the same time.
 
 ### 💖 Special Thanks to All Sponsors! 💖
-<!-- sponsors --><a href="https://github.com/jonakoudijs"><img src="https:&#x2F;&#x2F;github.com&#x2F;jonakoudijs.png" width="80px" alt="User avatar: jonakoudijs" /></a>&nbsp;&nbsp;<a href="https://github.com/dharsanb"><img src="https:&#x2F;&#x2F;github.com&#x2F;dharsanb.png" width="80px" alt="User avatar: dharsanb" /></a>&nbsp;&nbsp;<!-- sponsors -->
+<p align="center">
+<!-- sponsors-highlighted --><a href="https://github.com/mammouth-ai"><img src="https://github.com/mammouth-ai.png" width="120px" alt="mammouth.ai" /></a>&nbsp;&nbsp;<!-- sponsors-highlighted -->
+</p>
+<p align="center">
+<!-- sponsors --><a href="https://github.com/jonakoudijs"><img src="https://github.com/jonakoudijs.png" width="80px" alt="Jona Koudijs" /></a>&nbsp;&nbsp;<a href="https://liberapay.com/devXY"><img src="https://seccdn.libravatar.org/avatar/b6dddcd2f3a8097b0f1e148d14ebd1c4?s=160&amp;d=404&amp;=1" width="80px" alt="devXY" /></a>&nbsp;&nbsp;<!-- sponsors -->
+</p>
 
 Your sponsorship supports the ongoing development, improvement, and maintenance of this project 🙏
 <br>
@@ -1294,4 +1299,3 @@ Distributed under the MIT License. See [LICENSE](https://github.com/hcloud-k8s/t
 
 - [Talos Linux](https://www.talos.dev) for its impressively secure, immutable, and minimalistic Kubernetes distribution.
 - [Hetzner Cloud](https://www.hetzner.com/cloud) for offering excellent cloud infrastructure with robust Kubernetes integrations.
-- [Kube-Hetzner](https://github.com/kube-hetzner/terraform-hcloud-kube-hetzner) and [Terraform - Hcloud - Talos](https://github.com/hcloud-talos/terraform-hcloud-talos) for providing practical examples and inspiration for this module.
